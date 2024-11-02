@@ -1,0 +1,112 @@
+/* Global Styles */
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #F9FAFB;
+}
+
+/* Título principal */
+.label-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #555555;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-prompt-text-fill: #9CA3AF;
+}
+
+/* PasswordField */
+.password-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-prompt-text-fill: #9CA3AF;
+}
+
+/* Botones */
+.button {
+    -fx-background-color: #3B82F6;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #2563EB;
+}
+
+.button:pressed {
+    -fx-background-color: #1D4ED8;
+}
+
+/* Botón Agregar */
+.button-add {
+    -fx-background-color: #10B981;
+    -fx-text-fill: #FFFFFF;
+}
+
+.button-add:hover {
+    -fx-background-color: #059669;
+}
+
+.button-add:pressed {
+    -fx-background-color: #047857;
+}
+
+/* TabPane */
+.tab-pane {
+    -fx-tab-min-width: 100px;
+    -fx-tab-max-width: 200px;
+    -fx-tab-background-color: #E5E7EB;
+    -fx-tab-text-color: #333333;
+    -fx-tab-border-color: transparent;
+}
+
+.tab-pane .tab-header-area .tab {
+    -fx-background-color: #E5E7EB;
+    -fx-text-fill: #333333;
+}
+
+.tab-pane .tab-header-area .tab:selected {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #111827;
+    -fx-font-weight: bold;
+}
+
+/* TableView */
+.table-view {
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 5px;
+}
+
+.table-column-header {
+    -fx-background-color: #F3F4F6;
+    -fx-border-color: #D1D5DB;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.table-cell {
+    -fx-padding: 8px;
+    -fx-text-fill: #555555;
+}
+
+/* Error Message Label */
+.label-error {
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" spacing="10.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.absanr.factutrack.controller.DashboardController">
+    <padding>
+        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+    </padding>
+
+    <!-- Título de bienvenida -->
+    <Label fx:id="welcomeLabel" text="Bienvenido a FactuTrack" styleClass="label-title" />
+
+    <!-- Panel de pestañas -->
+    <TabPane>
+
+        <!-- Tab de Clientes -->
+        <Tab text="Clientes">
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+                </padding>
+
+                <!-- Controles de búsqueda y agregar cliente -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <TextField fx:id="clienteSearchField" promptText="Buscar cliente..." onAction="#buscarCliente"/>
+                    <Button text="Agregar Cliente" onAction="#onAddClienteClick" styleClass="button-add"/>
+                </HBox>
+
+                <!-- Tabla de clientes -->
+                <TableView fx:id="clientesTable">
+                    <TableColumn fx:id="colClienteID" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colClienteNombre" text="Nombre" prefWidth="150"/>
+                    <TableColumn fx:id="colClienteTelefono" text="Teléfono" prefWidth="100"/>
+                    <TableColumn fx:id="colClienteEmail" text="Email" prefWidth="150"/>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Tab de Facturas -->
+        <Tab text="Facturas">
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+                </padding>
+
+                <!-- Controles de búsqueda y agregar factura -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <TextField fx:id="facturaSearchField" promptText="Buscar factura..." onAction="#buscarFactura"/>
+                    <Button text="Agregar Factura" onAction="#onAddFacturaClick" styleClass="button-add"/>
+                </HBox>
+
+                <!-- Tabla de facturas -->
+                <TableView fx:id="facturasTable">
+                    <TableColumn fx:id="colFacturaID" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colFacturaCliente" text="Cliente" prefWidth="150"/>
+                    <TableColumn fx:id="colFacturaMonto" text="Monto" prefWidth="100"/>
+                    <TableColumn fx:id="colFacturaVencimiento" text="Vencimiento" prefWidth="100"/>
+                    <TableColumn fx:id="colFacturaEstado" text="Estado" prefWidth="100"/>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Tab de Pagos -->
+        <Tab text="Pagos">
+            <VBox alignment="TOP_CENTER" spacing="10.0">
+                <padding>
+                    <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
+                </padding>
+
+                <!-- Controles de búsqueda y agregar pago -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <TextField fx:id="pagoSearchField" promptText="Buscar pago..." onAction="#buscarPago"/>
+                    <Button text="Agregar Pago" onAction="#onAddPagoClick" styleClass="button-add"/>
+                </HBox>
+
+                <!-- Tabla de pagos -->
+                <TableView fx:id="pagosTable">
+                    <TableColumn fx:id="colPagoID" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colPagoFactura" text="Factura" prefWidth="150"/>
+                    <TableColumn fx:id="colPagoMonto" text="Monto" prefWidth="100"/>
+                    <TableColumn fx:id="colPagoFecha" text="Fecha de Pago" prefWidth="100"/>
+                </TableView>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+</VBox>
