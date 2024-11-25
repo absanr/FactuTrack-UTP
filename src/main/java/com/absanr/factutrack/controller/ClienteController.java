@@ -1,39 +1,107 @@
-package com.absanr.controller;
+package com.absanr.factutrack.controller;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import com.absanr.factutrack.dao.ClienteDAO;
+import com.absanr.factutrack.model.Cliente;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ClienteController {
+    private JPanel panel;
+    private JTextField nombreField, direccionField, telefonoField, emailField;
+    private JTable clientesTable;
+    private ClienteDAO clienteDAO = new ClienteDAO();
 
-    @FXML
-    private TextField nombreClienteField;
+    public ClienteController() {
+        panel = new JPanel();
+        panel.setLayout(null);
 
-    @FXML
-    private Button agregarClienteButton;
+        JLabel nombreLabel = new JLabel("Nombre:");
+        nombreLabel.setBounds(10, 10, 80, 25);
+        panel.add(nombreLabel);
 
-    @FXML
-    private Label mensajeLabel;
+        nombreField = new JTextField();
+        nombreField.setBounds(100, 10, 150, 25);
+        panel.add(nombreField);
 
-    // Método para inicializar el controlador
-    @FXML
-    public void initialize() {
-        // Puedes inicializar valores o configurar eventos
-        mensajeLabel.setText("Ingrese el nombre del cliente:");
+        JLabel direccionLabel = new JLabel("Dirección:");
+        direccionLabel.setBounds(10, 45, 80, 25);
+        panel.add(direccionLabel);
+
+        direccionField = new JTextField();
+        direccionField.setBounds(100, 45, 150, 25);
+        panel.add(direccionField);
+
+        JLabel telefonoLabel = new JLabel("Teléfono:");
+        telefonoLabel.setBounds(10, 80, 80, 25);
+        panel.add(telefonoLabel);
+
+        telefonoField = new JTextField();
+        telefonoField.setBounds(100, 80, 150, 25);
+        panel.add(telefonoField);
+
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setBounds(10, 115, 80, 25);
+        panel.add(emailLabel);
+
+        emailField = new JTextField();
+        emailField.setBounds(100, 115, 150, 25);
+        panel.add(emailField);
+
+        JButton agregarButton = new JButton("Agregar Cliente");
+        agregarButton.setBounds(260, 10, 150, 25);
+        panel.add(agregarButton);
+
+        clientesTable = new JTable(new DefaultTableModel(new Object[]{"ID", "Nombre", "Teléfono", "Email"}, 0));
+        JScrollPane scrollPane = new JScrollPane(clientesTable);
+        scrollPane.setBounds(10, 150, 560, 300);
+        panel.add(scrollPane);
+
+        agregarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                agregarCliente();
+            }
+        });
+
+        cargarClientes();
     }
 
-    // Acción para el botón "Agregar Cliente"
-    @FXML
-    private void onAgregarCliente() {
-        String nombreCliente = nombreClienteField.getText();
+    private void agregarCliente() {
+        String nombre = nombreField.getText();
+        String direccion = direccionField.getText();
+        String telefono = telefonoField.getText();
+        String email = emailField.getText();
 
-        if (nombreCliente.isEmpty()) {
-            mensajeLabel.setText("Por favor, ingrese un nombre.");
-        } else {
-            // Aquí iría la lógica para agregar el cliente (ej. guardarlo en la base de datos)
-            mensajeLabel.setText("Cliente " + nombreCliente + " agregado correctamente.");
-            nombreClienteField.clear();
+        if (nombre.isEmpty() || direccion.isEmpty() || telefono.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(panel, "Por favor, complete todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        Cliente cliente = new Cliente(nombre, direccion, telefono, email);
+        clienteDAO.agregarCliente(cliente);
+        cargarClientes();
+
+        nombreField.setText("");
+        direccionField.setText("");
+        telefonoField.setText("");
+        emailField.setText("");
+    }
+
+    private void cargarClientes() {
+        List<Cliente> clientes = clienteDAO.obtenerClientes();
+        DefaultTableModel model = (DefaultTableModel) clientesTable.getModel();
+        model.setRowCount(0); // Limpiar la tabla
+
+        for (Cliente cliente : clientes) {
+            model.addRow(new Object[]{cliente.getId(), cliente.getNombre(), cliente.getTelefono(), cliente.getEmail()});
+        }
+    }
+
+    public JPanel getPanel() {
+        return panel;
     }
 }

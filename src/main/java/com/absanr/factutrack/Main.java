@@ -1,67 +1,43 @@
 package com.absanr.factutrack;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import com.absanr.factutrack.controller.LoginController;
+import com.absanr.factutrack.view.LoginFrame;
 
-public class Main extends Application {
-    private static Stage primaryStage;
+import javax.swing.*;
 
-    @Override
-    public void start(Stage stage) {
-        primaryStage = stage;
-        mostrarLogin();
-    }
-
-    /**
-     * Muestra la ventana de Login
-     */
-    private void mostrarLogin() {
+/**
+ * Clase principal que inicia la aplicación FactuTrack.
+ * Se encarga de mostrar primero el login y, si es exitoso, muestra el dashboard.
+ */
+public class Main {
+    public static void main(String[] args) {
+        // Configurar el look and feel de Swing para que la interfaz se vea nativa en el sistema operativo
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/absanr/factutrack/view/login-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-
-            // Ajuste en la ruta de `styles.css` según la ubicación actual
-            String cssPath = "/com/absanr/factutrack/styles/styles.css";
-            if (getClass().getResource(cssPath) != null) {
-                scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
-            } else {
-                System.out.println("Advertencia: styles.css no se encontró en " + cssPath);
-            }
-
-            primaryStage.setTitle("Login - FactuTrack");
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error al configurar Look and Feel: " + e.getMessage());
         }
+
+        // Mostrar la ventana de inicio de sesión
+        SwingUtilities.invokeLater(() -> {
+            LoginFrame loginFrame = new LoginFrame();
+            new LoginController(loginFrame); // Asociar el controlador a la vista
+            loginFrame.setVisible(true);
+        });
     }
 
     /**
-     * Método para mostrar la ventana de Dashboard tras autenticación exitosa
+     * Método estático para mostrar el Dashboard después de una autenticación exitosa.
      */
     public static void mostrarDashboard() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/com/absanr/factutrack/view/dashboard-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
+        SwingUtilities.invokeLater(() -> {
+            JFrame dashboard = new JFrame("Dashboard - FactuTrack");
+            dashboard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            dashboard.setSize(900, 700);
+            dashboard.setVisible(true);
 
-            // Ajuste en la ruta de `styles.css` según la ubicación actual
-            String cssPath = "/com/absanr/factutrack/styles/styles.css";
-            if (Main.class.getResource(cssPath) != null) {
-                scene.getStylesheets().add(Main.class.getResource(cssPath).toExternalForm());
-            } else {
-                System.out.println("Advertencia: styles.css no se encontró en " + cssPath);
-            }
-
-            primaryStage.setTitle("FactuTrack - Sistema de Cobranza y Facturación");
-            primaryStage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        launch();
+            // Aquí se puede integrar el DashboardController si se implementa más lógica
+            // new DashboardController(dashboard);
+        });
     }
 }

@@ -1,17 +1,17 @@
 module com.absanr.factutrack {
-    requires javafx.controls;
-    requires javafx.fxml;
+    // Requiere acceso a módulos importantes
+    requires java.desktop; // Incluye AWT, Swing y datatransfer
+    requires java.sql; // Acceso a la base de datos
+    requires io.github.cdimascio.dotenv.java; // Biblioteca dotenv-java para la configuración de entorno
+    requires java.logging;
+    requires AbsoluteLayout.RELEASE230;
 
-    requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires net.synedra.validatorfx;
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
-    requires java.sql;
-    requires io.github.cdimascio.dotenv.java;
-
-    opens com.absanr.factutrack to javafx.fxml;
-    opens com.absanr.factutrack.controller to javafx.fxml;
+    // Exporta paquetes principales
     exports com.absanr.factutrack;
     exports com.absanr.factutrack.controller;
+    exports com.absanr.factutrack.model; // Exporta el paquete de modelos (si se necesita fuera)
+    exports com.absanr.factutrack.dao; // Exporta el paquete DAO (si se necesita fuera)
+
+    // Abre paquetes para la reflexión, si es necesario
+    opens com.absanr.factutrack.controller to java.desktop; // Permite acceso reflexivo a los controladores
 }

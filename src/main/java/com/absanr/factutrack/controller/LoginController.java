@@ -1,51 +1,75 @@
 package com.absanr.factutrack.controller;
 
 import com.absanr.factutrack.Main;
-import io.github.cdimascio.dotenv.Dotenv;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import com.absanr.factutrack.dao.UsuarioDAO;
+import com.absanr.factutrack.model.Usuario;
+import com.absanr.factutrack.view.LoginFrame;
 
+import java.awt.event.ActionEvent;
+
+/**
+ * Controlador encargado de manejar la lógica del login.
+ */
 public class LoginController {
 
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String ADMIN_USERNAME = dotenv.get("ADMIN_USERNAME");
-    private static final String ADMIN_PASSWORD = dotenv.get("ADMIN_PASSWORD");
+    private final LoginFrame loginFrame; // Vista asociada al controlador
+    private final UsuarioDAO usuarioDAO; // DAO para interactuar con la base de datos
 
-    @FXML
-    private TextField usernameField;
+    /**
+     * Constructor del LoginController.
+     * @param loginFrame la vista asociada
+     */
+    public LoginController(LoginFrame loginFrame) {
+        this.loginFrame = loginFrame;
+        this.usuarioDAO = new UsuarioDAO();
+        initController();
+    }
 
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label errorMessage;
+    /**
+     * Inicializa los listeners de los botones.
+     */
+    private void initController() {
+        loginFrame.getLoginButton().addActionListener(this::onLoginButtonClick);
+    }
 
     /**
      * Método que se ejecuta al hacer clic en el botón de inicio de sesión.
-     * Valida las credenciales y, si son correctas, muestra el dashboard.
      */
-    @FXML
-    protected void onLoginButtonClick() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+    private void onLoginButtonClick(ActionEvent e) {
+        String username = loginFrame.getUsernameField().getText().trim();
+        String password = new String(loginFrame.getPasswordField().getPassword()).trim();
 
+        // Validación de campos vacíos
+        if (username.isEmpty() || password.isEmpty()) {
+            loginFrame.setErrorMessage("Por favor, complete todos los campos.");
+            return;
+        }
+
+        // Validación de credenciales
         if (validarCredenciales(username, password)) {
-            Main.mostrarDashboard(); // Muestra el dashboard si la autenticación es exitosa
+            // Mostrar el Dashboard y cerrar la ventana actual
+            Main.mostrarDashboard();
+            loginFrame.dispose();
         } else {
-            errorMessage.setText("Usuario o contraseña incorrectos.");
+            loginFrame.setErrorMessage("Usuario o contraseña incorrectos.");
         }
     }
 
     /**
-     * Método para validar las credenciales contra los valores del archivo .env
-     *
-     * @param username Nombre de usuario ingresado
-     * @param password Contraseña ingresada
-     * @return true si las credenciales son correctas, false de lo contrario
+     * Valida las credenciales ingresadas contra las maestras o la base de datos.
+     * @param username nombre de usuario ingresado
+     * @param password contraseña ingresada
+     * @return true si las credenciales son válidas, false en caso contrario
      */
     private boolean validarCredenciales(String username, String password) {
-        return ADMIN_USERNAME.equals(username) && ADMIN_PASSWORD.equals(password);
+        // Validar credenciales desde la base de datos
+        try {
+            Usuario usuario = usuarioDAO.buscarUsuarioPorNombreUsuario(username);
+            return usuario != null && usuario.getContrasena().equals(password);
+        } catch (Exception ex) {
+            loginFrame.setErrorMessage("Error de conexión. Intente nuevamente.");
+            ex.printStackTrace();
+            return false;
+        }
     }
 }
