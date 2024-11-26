@@ -39,3 +39,4 @@ build/
 
 # Ignorar archivo .env
 .env
+/.idea
